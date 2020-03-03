@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>document.onload = llamdas();
+
+var selectOption = "";
+
+function llamdas() {
+    inptutAddEvents();
+    getMarvelData();
+}
+
+/**
+ * Añadir eventos a los inputs.
+ */
+function inptutAddEvents() {
+    $('#characterOpt').click(function () {
+        selectOption = 'characters';
+    });
+
+    $('#comicOpt').click(function () {
+        selectOption = 'comics';
+    });
+
+    $('#searchInp').change(filteredSearch);
+}
+
+
+/**
+ * Recogida de todos los personajes
+ */
+function getMarvelData() {
+
+    var dataCharacter = [];
+    $.ajax({
+        url: 'https://gateway.marvel.com:443/v1/public/characters?apikey=9fb583ddab8f0da73c341063826d73d5',
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function () {
+            $('#spinner1').show();
+        },
+        complete: function () {
+            $('#spinner1').hide();
+        },
+        success: function (response) {
+            dataCharacter = response.data;
+
+            var dataLen = dataCharacter.results.length;
+            var listCharacter = dataCharacter.results;
+
+            for (var index = 0; index &lt; dataLen; index++) {
+                var divCol = $('&lt;div class="col mb-4">&lt;/div>');
+                var divCard = $('&lt;div class="card" style="width: 18rem; height: 25rem">&lt;/div');
+                var pathImg = listCharacter[index].thumbnail.path + '.' + listCharacter[index].thumbnail.extension;
+                var imgCard = $("&lt;img src=" + pathImg + " class='card-img-top w-100 h-75'>");
+                var divCBody = $('&lt;div class="card-body">&lt;h4 class="card-title">' + listCharacter[index].name + '&lt;/h4>&lt;/div>');
+                divCard.append(imgCard).append(divCBody);
+                divCol.append(divCard);
+                $('#dataContent').append(divCol);
+            };
+        }
+    });
+}
+
+/**
+ * Busqueda de comics/personajes por texto filtrado.
+ */
+function filteredSearch() {
+
+    var input = $('#searchInp').val();
+    var urlSearch = "";
+
+    switch (selectOption) {
+        case 'characters':
+            urlSearch = 'https://gateway.marvel.com:443/v1/public/characters?nameStartsWith=' + input + '&amp;apikey=9fb583ddab8f0da73c341063826d73d5';
+            break;
+        case 'comics':
+            urlSearch = 'https://gateway.marvel.com:443/v1/public/comics?titleStartsWith=' + input + '&amp;apikey=9fb583ddab8f0da73c341063826d73d5';
+            break;
+    }
+
+    var dataSerach = [];
+    var list;
+    var listLenght;
+    $.ajax({
+        url: urlSearch,
+        type: 'GET',
+        dataType: 'JSON',
+        beforeSend: function () {
+            $('#spinner2').show();
+        },
+        complete: function () {
+            $('#spinner2').hide();
+        },
+        success: function (response) {
+            $('#filteredContent').empty();
+            dataSerach = response.data;
+
+            var dataLen = dataSerach.results.length;
+            var listFiltered = dataSerach.results;
+            if (selectOption == 'characters') {
+                for (var index = 0; index &lt; dataLen; index++) {
+                    var divCol = $('&lt;div class="col mb-4">&lt;/div>');
+                    var divCard = $('&lt;div class="card" style="width: 10rem height: 18rem">&lt;/div');
+                    var pathImg = listFiltered[index].thumbnail.path + '.' + listFiltered[index].thumbnail.extension;
+                    var imgCard = $("&lt;img src=" + pathImg + " class='card-img-top w-100 mh-75'>");
+                    var divCBody = $('&lt;div class="card-body">&lt;h4 class="card-title">' + listFiltered[index].name + '&lt;/h4>&lt;/div>');
+                    divCard.append(imgCard).append(divCBody);
+                    divCol.append(divCard);
+                    $('#filteredContent').append(divCol);
+                };
+            } else {
+                for (var index = 0; index &lt; dataLen; index++) {
+                    var divCol = $('&lt;div class="col mb-4">&lt;/div>');
+                    var divCard = $('&lt;div class="card" style="width: 18rem height: 25rem">&lt;/div');
+                    var pathImg = listFiltered[index].thumbnail.path + '.' + listFiltered[index].thumbnail.extension;
+                    var imgCard = $("&lt;img src=" + pathImg + " class='card-img-top w-100 mh-75'>");
+                    var divCBody = $('&lt;div class="card-body">&lt;h4 class="card-title">' + listFiltered[index].title + '&lt;/h4>&lt;/div>');
+
+                    var cBodyText;
+                    if (listFiltered[index].description != null) {
+                        if (listFiltered[index].description.length > 20) {
+                            cBodyText = $('&lt;p class="card-text">' + listFiltered[index].description + '&lt;/p>');
+                            cBodyText.shorten({
+                                "showChars": 20,
+                                "moreText": "Ver mas...",
+                                "lessText": "Ver menos...",
+                            });
+                        } else {
+                            cBodyText = $('&lt;p class="card-text">' + listFiltered[index].description + '&lt;/p>');
+                        }
+                    } else {
+                        cBodyText = $('&lt;p class="card-text">No description found&lt;/p>');
+                    }
+                    divCBody.append(cBodyText);
+                    divCard.append(imgCard).append(divCBody);
+                    divCol.append(divCard);
+                    $('#filteredContent').append(divCol);
+                }
+            }
+        }
+    })
+
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#filteredSearch">filteredSearch</a></li><li><a href="global.html#getMarvelData">getMarvelData</a></li><li><a href="global.html#inptutAddEvents">inptutAddEvents</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Feb 19 2020 13:38:02 GMT+0000 (GMT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="" rel="stylesheet" type="text/css">
+    <link href="css/pagination.css" rel="stylesheet" type="text/css">
+
+    <!--BOOTSTRAP CSS-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Marverl Comics Fan Page</title>
+
+</head>
+
+<body>
+    <div id="container">
+        <nav id="header" class="navbar navbar-dark bg-dark sticky-top rounded">
+            <span class="navbar-brand d-flex">
+                <img src="img/marvel-icon.png" height="40" width="40">
+                <p class="text-white h3 ml-3">Marvel comic fan page</p>
+            </span>
+        </nav>
+
+        <div id="buttons" class="accordion">
+            <button class="btn btn-dark btn-lg " type="button" data-toggle="collapse" data-target="#marvelCollapse"
+                aria-expanded="false" aria-controls="collapseExample">
+                All marvel Universe
+            </button>
+            <button class="btn btn-dark btn-lg" type="button" data-toggle="collapse" data-target="#filterCollapse"
+                aria-expanded="false" aria-controls="collapseExample">
+                Search in Marvel
+            </button>
+
+
+            <div class="collapse" id="marvelCollapse" data-parent="#buttons">
+                <div>
+                    <h3>All marvel info:</h3>
+                    <div id="spinner1" class="spinner-border" role="status" style="display: none;"><span class="sr-only">Loading...</span></div>
+                    <div id="dataContent" class="d-flex flex-column">
+                        <div id="paginatedContent" class="row d-flex justify-content-center"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="collapse" id="filterCollapse" data-parent="#buttons">
+                <h3>Filter your shearch:</h3>
+                <form>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="marvelOption" id="characterOpt"
+                            value="characters">
+                        <label class="form-check-label" for="characterOpt">Search of a Character</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="marvelOption" id="comicOpt" value="comics">
+                        <label class="form-check-label" for="comicOpt">Search of a Comic</label>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <input type="text" id="searchInp" class="form-control" placeholder="My search...">
+                        </div>
+                    </div>
+                </form>
+                </br>
+                <div id="spinner2" class="spinner-border" role="status" style="display: none;"><span class="sr-only">Loading...</span></div>
+                <div id="filteredContent" class="d-flex flex-column">
+                    <div id="pagSelect" class="row d-flex justify-content-around"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <!-- JQUERY -->
+        <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+            integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+
+        <!-- BOOTSTRAP -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+
+        <!-- MAIN JS -->
+        <script src="js/shorten.js"></script>
+        <script src="js/pagination.js"></script>
+        <script src="js/main.js"></script>
+
+</body>
+
+</html>

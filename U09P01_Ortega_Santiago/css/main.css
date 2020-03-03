@@ -1,0 +1,19 @@
+#container{
+    margin: 5px 5px 5px 5px;
+}
+
+#buttons{
+     margin-top: 1em;
+}
+
+ul img{
+    width: 100% !important;
+}
+
+.card{
+    width: 30%;
+}
+
+#pagSelect li{
+    width: 20%;
+}
